@@ -423,7 +423,7 @@ with gr.Blocks() as menu_ui:
             reload_button = gr.Button("Reload Ontologies")
 
             def update_ontology_table():
-                ontology_data = list_ontologies()
+                ontology_data = list_compared_ontologies()
                 return ontology_data
                 
             reload_button.click(update_ontology_table, outputs=[ontology_table])
