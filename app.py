@@ -1,11 +1,13 @@
+## ini yang ok final
+
 import gradio as gr
 import os
 import pandas as pd
-from datetime import datetime
 from rdflib import Graph, Namespace, RDF, RDFS, OWL
+from datetime import datetime
 
 # Folder untuk menyimpan file yang diupload
-UPLOAD_FOLDER = "./upload"
+UPLOAD_FOLDER = "/content/drive/MyDrive/SDI"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Fungsi untuk menampilkan isi file .owl
@@ -179,7 +181,7 @@ import pandas as pd
 def csv_to_owl(csv_file_path, output_owl_path):
     """
     Converts a CSV file containing database schema information into an OWL ontology file.
-    
+
     :param csv_file_path: Path to the input CSV file.
     :param output_owl_path: Path to save the generated OWL file.
     """
@@ -196,29 +198,29 @@ def csv_to_owl(csv_file_path, output_owl_path):
     ontology_uri = "http://example.com/ontology#"
     ontology = Graph()
     ONTO = Namespace(ontology_uri)
-    
+
     # Bind the namespace
     ontology.bind("onto", ONTO)
-    
+
     # Add ontology metadata
     ontology.add((ONTO.Ontology, RDF.type, OWL.Ontology))
-    
+
     # Process the CSV data to create ontology classes and properties
     for _, row in df_csv.iterrows():
         table_name = row["table_name"]
         column_name = row["column_name"]
         data_type = row["data_type"]
         constraint_type = row["constraint_type"]
-    
+
         # Create Class for table if not exists
         class_uri = ONTO[table_name]
         ontology.add((class_uri, RDF.type, OWL.Class))
-    
+
         # Create DatatypeProperty for column
         property_uri = ONTO[column_name]
         ontology.add((property_uri, RDF.type, OWL.DatatypeProperty))
         ontology.add((property_uri, RDFS.domain, class_uri))
-    
+
         # Define Range based on Data Type
         datatype_mapping = {
             "bigint": "xsd:integer",
@@ -228,17 +230,17 @@ def csv_to_owl(csv_file_path, output_owl_path):
             "boolean": "xsd:boolean",
             "timestamp without time zone": "xsd:dateTime",
         }
-    
+
         xsd_type = datatype_mapping.get(data_type, "xsd:string")
         ontology.add((property_uri, RDFS.range, Namespace("http://www.w3.org/2001/XMLSchema#")[xsd_type]))
-    
+
         # Define Primary Key as unique identifier
         if constraint_type == "PRIMARY KEY":
             ontology.add((property_uri, RDF.type, OWL.FunctionalProperty))
-    
+
     # Save the ontology to a file
     ontology.serialize(destination=output_owl_path, format="xml")
-    
+
     return output_owl_path
 
 
@@ -253,7 +255,7 @@ def convert_to_ontology(file, owner, date):
         df_excel.to_csv(csv_file, index=False)
 
         csv_to_owl(csv_file, output_file)
-        
+
         # Baca isi file .owl
         # Simpan file di folder upload
         file_path = os.path.join(UPLOAD_FOLDER, os.path.basename(file.name))
@@ -319,19 +321,6 @@ def merge_ontologies(file1, file2):
         return f"Ontologies merged successfully and saved as {merged_filename}!"
     except Exception as e:
         return f"Error merging ontologies: {e}"
-
-# Function to clear ontology selections and results
-def clear_comparison():
-    """
-    Clears the selected ontologies and comparison results.
-    
-    Returns:
-        Empty values for selected ontology 1 and 2, an empty dataframe for comparison_table, 
-        and an empty string for summary_output.
-    """
-    empty_df = pd.DataFrame(columns=["Entity/Relation", "In Ontology 1", "In Ontology 2"])
-    return "", "", empty_df, ""
-
 
 # Sistem Menu dengan Gradio
 with gr.Blocks() as menu_ui:
@@ -432,7 +421,13 @@ with gr.Blocks() as menu_ui:
 
             # Show available ontologies as a DataFrame
             ontology_table = gr.Dataframe(value=list_compared_ontologies(), headers=["Ontology Name"], interactive=False)
+            reload_button = gr.Button("Reload Ontologies")
 
+            def update_ontology_table():
+                ontology_data = list_ontologies()
+                return ontology_data
+                
+            reload_button.click(update_ontology_table, outputs=[ontology_table])
             # Selection buttons
             ontology_input = gr.Textbox(label="Type Ontology Name (copy from table)", interactive=True)
             select_button_1 = gr.Button("Set as Ontology 1")
@@ -449,6 +444,7 @@ with gr.Blocks() as menu_ui:
             # Outputs: Comparison Table and Summary
             comparison_table = gr.Dataframe(headers=["Entity/Relation", "In Ontology 1", "In Ontology 2"], interactive=False)
             #summary_output = gr.Textbox(label="Summary", interactive=False, lines=5)
+            #summary_output = gr.Dataframe(headers=["Metric", "Count"], interactive=False)
             summary_output = gr.Markdown()
 
             # Button clicks to set ontology selection
@@ -496,4 +492,3 @@ with gr.Blocks() as menu_ui:
 # Jalankan aplikasi
 if __name__ == "__main__":
     menu_ui.launch()
-
