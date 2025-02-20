@@ -458,6 +458,13 @@ with gr.Blocks() as menu_ui:
               outputs=[comparison_table, summary_output]
             )
 
+            # Function to clear ontology selections and results
+            def clear_comparison():              
+                empty_df = pd.DataFrame(columns=["Entity/Relation", "In Ontology 1", "In Ontology 2"])
+                empty_summary = "### Ontology Comparison Summary\n\n_No data available. Please compare two ontologies._"
+    
+                return "", "", empty_df, empty_summary
+
             # Clear selections and results
             clear_button.click(clear_comparison, outputs=[selected_ontology_1, selected_ontology_2, comparison_table, summary_output])
 
