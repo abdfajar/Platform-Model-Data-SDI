@@ -1,21 +1,21 @@
-# Ontology Management System with Gradio
+# Sistem Manajemen Ontologi dengan Gradio
 
-This is a web-based ontology management system built with Gradio. The system allows users to:
-- Upload ontology files (`.owl`)
-- Convert `.csv` or `.xlsx` files into `.owl` format
-- Compare two ontologies and analyze similarities and differences
-- Merge ontologies
-- Preview ontology contents
+Sistem ini adalah aplikasi berbasis web untuk manajemen ontologi menggunakan Gradio. Dengan sistem ini, pengguna dapat:
+- Mengunggah file ontologi (`.owl`)
+- Mengonversi file `.csv` atau `.xlsx` ke dalam format `.owl`
+- Membandingkan dua ontologi dan menganalisis kesamaan serta perbedaannya
+- Menggabungkan dua ontologi
+- Melihat isi file ontologi
 
-## Features
-1. **Upload Ontology**: Upload `.owl` files and save metadata.
-2. **Convert Data**: Convert `.csv` or `.xlsx` files to ontology format.
-3. **Ontology Comparison**: Compare two ontologies based on classes, relationships, and properties.
-4. **Ontology Merging**: Merge two ontology files.
-5. **Ontology Preview**: View the content of uploaded ontologies.
+## Fitur
+1. **Unggah Ontologi**: Mengunggah file `.owl` dan menyimpan metadata-nya.
+2. **Konversi Data**: Mengubah file `.csv` atau `.xlsx` menjadi format ontologi.
+3. **Perbandingan Ontologi**: Membandingkan dua ontologi berdasarkan kelas, relasi, dan properti.
+4. **Penggabungan Ontologi**: Menggabungkan dua file ontologi menjadi satu.
+5. **Pratinjau Ontologi**: Melihat isi dari file ontologi yang telah diunggah.
 
-## Installation
-1. Clone this repository:
+## Instalasi
+1. Clone repositori ini:
    ```bash
    git clone <repository_url>
    cd <repository_directory>
@@ -23,5 +23,5 @@ This is a web-based ontology management system built with Gradio. The system all
 2. Install dependency
    pip install -r requirements.txt
 
-## Run Application
+## Jalankan Aplikasi 
 python app.py
