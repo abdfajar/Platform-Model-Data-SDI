@@ -7,7 +7,7 @@ from rdflib import Graph, Namespace, RDF, RDFS, OWL
 from datetime import datetime
 
 # Folder untuk menyimpan file yang diupload
-UPLOAD_FOLDER = "/content/drive/MyDrive/SDI"
+UPLOAD_FOLDER = "./upload"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Fungsi untuk menampilkan isi file .owl
@@ -181,7 +181,6 @@ import pandas as pd
 def csv_to_owl(csv_file_path, output_owl_path):
     """
     Converts a CSV file containing database schema information into an OWL ontology file.
-
     :param csv_file_path: Path to the input CSV file.
     :param output_owl_path: Path to save the generated OWL file.
     """
